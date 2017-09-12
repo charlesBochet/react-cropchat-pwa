@@ -1,78 +1,25 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
-
-import { createStore, combineReducers, compose } from 'redux';
-import { reactReduxFirebase, firebaseStateReducer } from 'react-redux-firebase';
-import { Provider } from 'react-redux';
-import firebase from 'firebase';
-
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import AppBar from 'material-ui/AppBar';
-import MenuItem from 'material-ui/MenuItem';
-import Drawer from 'material-ui/Drawer';
-
-const rootReducer = combineReducers({
-  firebase: firebaseStateReducer,
-});
-
-var config = {
-  apiKey: 'AIzaSyDOhxRITgaq2LSTtZu72BVAcd3o7XaKb3g',
-  authDomain: 'cropchat-rea.firebaseapp.com',
-  databaseURL: 'https://cropchat-rea.firebaseio.com',
-  projectId: 'cropchat-rea',
-  storageBucket: 'cropchat-rea.appspot.com',
-  messagingSenderId: '1087740784005',
-};
-const rrfConfig = { userProfile: 'users' };
-
-const firebaseApp = firebase.initializeApp(config);
-
-const createStoreWithFirebase = compose(
-  reactReduxFirebase(firebaseApp, rrfConfig)
-)(createStore);
-
-const store = createStoreWithFirebase(rootReducer, {});
+import LayoutTemplate from './LayoutTemplate';
 
 class Layout extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { menuOpen: false };
+  state = {
+    component: null,
+  };
+
+  componentDidMount() {
+    require.ensure([], require => {
+      const component = require('./LayoutWithMaterial').default;
+      this.setState({
+        component: component,
+      });
+    });
   }
 
-  handleToggle = () => this.setState({ menuOpen: !this.state.menuOpen });
-
   render() {
-    return (
-      <Provider store={store}>
-        <div className="App">
-          <MuiThemeProvider>
-            <div className="App">
-              <AppBar
-                style={{ position: 'fixed' }}
-                title="Cropchat"
-                onLeftIconButtonTouchTap={this.handleToggle}
-              />
-              <Drawer
-                open={this.state.menuOpen}
-                docked={false}
-                onRequestChange={menuOpen => this.setState({ menuOpen })}
-              >
-                <MenuItem
-                  onClick={this.handleToggle}
-                  containerElement={<Link to="/" />}
-                  primaryText="Home"
-                />
-                <MenuItem
-                  onClick={this.handleToggle}
-                  containerElement={<Link to="/post" />}
-                  primaryText="Post"
-                />
-              </Drawer>
-              {this.props.children}
-            </div>
-          </MuiThemeProvider>
-        </div>
-      </Provider>
+    return this.state.component ? (
+      <this.state.component {...this.props} />
+    ) : (
+      <LayoutTemplate />
     );
   }
 }
