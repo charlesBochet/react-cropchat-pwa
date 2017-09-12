@@ -5,6 +5,7 @@ import { compose } from 'redux';
 import { firebaseConnect } from 'react-redux-firebase';
 
 import Page from '../components/Page';
+import PicturesListPlacholder from '../components/PicturesListPlaceholder';
 import Picture from './components/Picture';
 
 import FloatingActionButton from 'material-ui/FloatingActionButton';
@@ -15,13 +16,15 @@ class Home extends Component {
     const { cats } = this.props;
 
     const catsList =
-      cats !== undefined
-        ? Object.keys(cats)
-            .reverse()
-            .map((key, id) => (
-              <Picture url={cats[key].url} comment={cats[key].comment} />
-            ))
-        : 'Loading...';
+      cats !== undefined ? (
+        Object.keys(cats)
+          .reverse()
+          .map((key, id) => (
+            <Picture url={cats[key].url} comment={cats[key].comment} />
+          ))
+      ) : (
+        <PicturesListPlacholder />
+      );
 
     return (
       <Page title="Home">
