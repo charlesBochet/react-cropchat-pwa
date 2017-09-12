@@ -1,0 +1,30 @@
+{
+  "short_name": "Cropchat",
+  "name": "Cropchat - Chat with cats",
+  "icons": [
+    {
+      "src": "icon-64x64.png",
+      "sizes": "64x64",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "./",
+  "display": "standalone",
+  "theme_color": "#00bcd4",
+  "background_color": "#00bcd4"
+}
