@@ -90,7 +90,6 @@ module.exports = {
     // for React Native Web.
     extensions: ['.web.js', '.js', '.json', '.web.jsx', '.jsx'],
     alias: {
-      
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
@@ -121,7 +120,6 @@ module.exports = {
             options: {
               formatter: eslintFormatter,
               eslintPath: require.resolve('eslint'),
-              
             },
             loader: require.resolve('eslint-loader'),
           },
@@ -149,7 +147,6 @@ module.exports = {
             include: paths.appSrc,
             loader: require.resolve('babel-loader'),
             options: {
-              
               compact: true,
             },
           },
@@ -286,12 +283,18 @@ module.exports = {
       fileName: 'asset-manifest.json',
     }),
     new SWPrecacheWebpackPlugin({
-        dontCacheBustUrlsMatching: /\.\w{8}\./,
-        filename: 'service-worker.js',
-        minify: true,
-        navigateFallback: publicUrl + '/index.html',
-        navigateFallbackWhitelist: [/^(?!\/__).*/],
-        staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
+      dontCacheBustUrlsMatching: /\.\w{8}\./,
+      filename: 'service-worker.js',
+      minify: true,
+      navigateFallback: publicUrl + '/index.html',
+      navigateFallbackWhitelist: [/^(?!\/__).*/],
+      staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
+      runtimeCaching: [
+        {
+          urlPattern: /^https:\/\/res\.cloudinary\.com\//,
+          handler: 'cacheFirst',
+        },
+      ],
     }),
     // Moment.js is an extremely popular library that bundles large locale files
     // by default due to how Webpack interprets its code. This is a practical
