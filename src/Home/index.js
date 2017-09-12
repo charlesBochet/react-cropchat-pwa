@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router';
 
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -7,6 +6,9 @@ import { firebaseConnect } from 'react-redux-firebase';
 
 import Page from '../components/Page';
 import Picture from './components/Picture';
+
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
 
 class Home extends Component {
   render() {
@@ -24,18 +26,17 @@ class Home extends Component {
     return (
       <Page title="Home">
         <ul style={{ padding: '10px' }}>{catsList}</ul>
-        <div style={{ textAlign: 'center' }}>
-          <Link
-            to="/post"
-            style={{
-              display: 'inline-block',
-              color: '#333',
-              marginRight: '15px',
-            }}
-          >
-            POST A NEW CAT PICTURE
-          </Link>
-        </div>
+        <FloatingActionButton
+          href="/post"
+          secondary={true}
+          style={{
+            position: 'fixed',
+            right: 20,
+            bottom: 20,
+          }}
+        >
+          <ContentAdd />
+        </FloatingActionButton>
       </Page>
     );
   }
