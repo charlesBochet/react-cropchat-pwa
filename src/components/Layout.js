@@ -6,6 +6,11 @@ import { reactReduxFirebase, firebaseStateReducer } from 'react-redux-firebase';
 import { Provider } from 'react-redux';
 import firebase from 'firebase';
 
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import AppBar from 'material-ui/AppBar';
+import MenuItem from 'material-ui/MenuItem';
+import Drawer from 'material-ui/Drawer';
+
 const rootReducer = combineReducers({
   firebase: firebaseStateReducer,
 });
@@ -40,53 +45,32 @@ class Layout extends Component {
     return (
       <Provider store={store}>
         <div className="App">
-          <div
-            style={{
-              width: '100%',
-              backgroundColor: 'white',
-              height: '80px',
-              lineHeight: '80px',
-            }}
-          >
-            <div
-              style={{
-                display: 'inline-block',
-                float: 'left',
-                paddingLeft: '20px',
-                color: '#777',
-                fontWeight: 'bold',
-                fontSize: '24px',
-                cursor: 'pointer',
-              }}
-            >
-              CROPCHAT
-            </div>
-            <div style={{ display: 'inline-block', float: 'right' }}>
-              <Link
-                to="/"
-                style={{
-                  display: 'inline-block',
-                  textDecoration: 'none',
-                  color: '#999',
-                  marginRight: '15px',
-                }}
+          <MuiThemeProvider>
+            <div className="App">
+              <AppBar
+                style={{ position: 'fixed' }}
+                title="Cropchat"
+                onLeftIconButtonTouchTap={this.handleToggle}
+              />
+              <Drawer
+                open={this.state.menuOpen}
+                docked={false}
+                onRequestChange={menuOpen => this.setState({ menuOpen })}
               >
-                Home
-              </Link>
-              <Link
-                to="/post"
-                style={{
-                  display: 'inline-block',
-                  textDecoration: 'none',
-                  color: '#999',
-                  marginRight: '15px',
-                }}
-              >
-                Post
-              </Link>
+                <MenuItem
+                  onClick={this.handleToggle}
+                  containerElement={<Link to="/" />}
+                  primaryText="Home"
+                />
+                <MenuItem
+                  onClick={this.handleToggle}
+                  containerElement={<Link to="/post" />}
+                  primaryText="Post"
+                />
+              </Drawer>
+              {this.props.children}
             </div>
-          </div>
-          {this.props.children}
+          </MuiThemeProvider>
         </div>
       </Provider>
     );
