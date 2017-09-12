@@ -1,17 +1,45 @@
 import React, { Component } from 'react';
 import { Router, browserHistory, Route, IndexRoute } from 'react-router';
 
-import Layout from './components/Layout';
-import Home from './Home';
-import Post from './Post';
-
 class App extends Component {
   render() {
     return (
       <Router history={browserHistory}>
-        <Route path="/" component={Layout}>
-          <IndexRoute component={Home} />
-          <Route path="post" component={Post} />
+        <Route
+          path="/"
+          getComponent={(location, cb) => {
+            require.ensure(
+              [],
+              require => {
+                cb(null, require('./components/Layout').default);
+              },
+              'layoutChunk'
+            );
+          }}
+        >
+          <IndexRoute
+            getComponent={(location, cb) => {
+              require.ensure(
+                [],
+                require => {
+                  cb(null, require('./Home').default);
+                },
+                'homeChunk'
+              );
+            }}
+          />
+          <Route
+            path="post"
+            getComponent={(location, cb) => {
+              require.ensure(
+                [],
+                require => {
+                  cb(null, require('./Post').default);
+                },
+                'postChunk'
+              );
+            }}
+          />
         </Route>
       </Router>
     );
