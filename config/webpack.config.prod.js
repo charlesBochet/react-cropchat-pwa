@@ -289,6 +289,12 @@ module.exports = {
       navigateFallback: publicUrl + '/index.html',
       navigateFallbackWhitelist: [/^(?!\/__).*/],
       staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
+      runtimeCaching: [
+        {
+          urlPattern: /^https:\/\/res\.cloudinary\.com\//,
+          handler: 'cacheFirst',
+        },
+      ],
     }),
     // Moment.js is an extremely popular library that bundles large locale files
     // by default due to how Webpack interprets its code. This is a practical
