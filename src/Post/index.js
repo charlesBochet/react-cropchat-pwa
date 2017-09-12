@@ -13,22 +13,30 @@ class Post extends Component {
 
   postPicture(event) {
     event.preventDefault();
-    axios
-      .post('https://api.cloudinary.com/v1_1/dfaypbt40/image/upload', {
-        file: this.state.pictureToPostUrl,
-        timestamp: new Date().getTime(),
-        api_key: '153638847867413',
-        upload_preset: 'ne9fa7sc',
-      })
-      .then(response => {
-        this.props.firebase.push('cats', {
-          url: response.data.secure_url,
-          comment: this.state.comment,
-          info: 'Posted by an anonymous user',
-          created_at: new Date().getTime(),
-        });
-        browserHistory.push('/');
+
+    if ('geolocation' in navigator) {
+      navigator.geolocation.getCurrentPosition(location => {
+        axios
+          .post('https://api.cloudinary.com/v1_1/dfaypbt40/image/upload', {
+            file: this.state.pictureToPostUrl,
+            timestamp: new Date().getTime(),
+            api_key: '153638847867413',
+            upload_preset: 'ne9fa7sc',
+          })
+          .then(response => {
+            this.props.firebase.push('cats', {
+              url: response.data.secure_url,
+              comment: this.state.comment,
+              info:
+                'Posted by an anonymous user (Latitude: ' +
+                location.coords.latitude +
+                ')',
+              created_at: new Date().getTime(),
+            });
+            browserHistory.push('/');
+          });
       });
+    }
   }
 
   loadPicture() {
